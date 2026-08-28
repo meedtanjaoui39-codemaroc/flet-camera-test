@@ -1,10 +1,23 @@
 import flet as ft
+import flet_camera as fc
 
 
-def main(page: ft.Page):
+async def main(page: ft.Page):
     page.title = "Camera Test"
 
-    camera = ft.Camera()
+    camera = fc.Camera(
+        expand=True,
+        preview_enabled=True,
+    )
+
+    cameras = await camera.get_available_cameras()
+
+    if cameras:
+        await camera.initialize(
+            description=cameras[0],
+            resolution_preset=fc.ResolutionPreset.MEDIUM,
+            enable_audio=False,
+        )
 
     page.add(camera)
 
